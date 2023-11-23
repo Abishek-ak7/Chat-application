@@ -1,8 +1,4 @@
 #Chatapplication
-Creating documentation for your Node.js chat application involves explaining how to set it up, use it, and understand its features. Here's an example of documentation for your chat application:
-
----
-
 ## Node.js Chat Application Documentation
 
 This Node.js chat application allows users to join a chat room by entering their username and send messages in real-time to all connected users.
