@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Simple Chat Application</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div id="username-form" class="form">
+      <label for="username">Enter your username:</label>
+      <input type="text" id="username" placeholder="Username">
+      <button onclick="enterChat()">Enter Chat</button>
+    </div>
+    
+    <div id="chat-box" class="chat-box" style="display: none;">
+      <div id="message-area" class="message-area"></div>
+      <div class="input-area">
+        <input type="text" id="message" placeholder="Type a message...">
+        <button onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+<script>
+    const socket = io();
+
+    function enterChat() {
+      const username = document.getElementById('username').value.trim();
+      if (username !== '') {
+        document.getElementById('username-form').style.display = 'none';
+        document.getElementById('chat-box').style.display = 'block';
+        socket.emit('join', username);
+      } else {
+        alert('Please enter a username.');
+      }
+    }
+
+    function sendMessage() {
+      const messageInput = document.getElementById('message').value.trim();
+      if (messageInput !== '') {
+        socket.emit('chat message', messageInput);
+        document.getElementById('message').value = '';
+      } else {
+        alert('Please enter a message.');
+      }
+    }
+
+    socket.on('chat message', (msg) => {
+      const messageArea = document.getElementById('message-area');
+      const messageElement = document.createElement('div');
+      messageElement.innerHTML = msg;
+      messageArea.appendChild(messageElement);
+      messageArea.scrollTop = messageArea.scrollHeight;
+    });
+  </script>
+</body>
+</html>
